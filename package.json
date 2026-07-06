@@ -1,0 +1,11 @@
+{
+  "name": "jmk-website",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "concurrently \"cd server && node index.js\" \"cd client && npm run dev -- --host\"",
+    "dev": "concurrently \"cd server && node index.js\" \"cd client && npm run dev -- --host\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
