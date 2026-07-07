@@ -76,6 +76,10 @@ const Register = () => {
     e.preventDefault();
     if (!validate()) return;
     setLoading(true);
+    // Show message if server takes time to wake up (Render free tier)
+    const wakeupTimer = setTimeout(() => {
+      toast.loading('⏳ الخادم يستيقظ، انتظر قليلاً...', { id: 'wakeup' });
+    }, 5000);
     try {
       let payload;
       let config = {};
@@ -87,7 +91,6 @@ const Register = () => {
             payload.append(k, v);
           }
         });
-        // Axios handles headers for FormData automatically
       } else {
         payload = { ...form };
         delete payload.photo;
@@ -95,10 +98,14 @@ const Register = () => {
       }
 
       await API.post('/players', payload, config);
+      clearTimeout(wakeupTimer);
+      toast.dismiss('wakeup');
       toast.success('✅ تم إرسال طلبك بنجاح! سيتم مراجعته قريباً.', { duration: 5000 });
       setForm({ firstName: '', lastName: '', age: '', phone: '', email: '', wilaya: '', commune: '', position: '', ageCategory: '', preferredFoot: '', message: '', photo: null });
       setPhotoPreview(null);
     } catch (err) {
+      clearTimeout(wakeupTimer);
+      toast.dismiss('wakeup');
       console.error('Registration error:', err.response || err);
       const msg = err.response?.data?.message || 'حدث خطأ أثناء الإرسال. يرجى المحاولة مجدداً.';
       toast.error(msg, { duration: 6000 });

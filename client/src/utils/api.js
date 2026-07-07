@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API = axios.create({
   baseURL: import.meta.env.DEV ? '/api' : 'https://jmk-backend.onrender.com/api',
-  timeout: 10000,
+  timeout: 60000, // 60 seconds to allow Render free tier to wake up
 });
 
 // Attach JWT token to all requests if available
