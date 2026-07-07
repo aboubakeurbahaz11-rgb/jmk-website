@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.DEV ? '/api' : 'https://jmk-backend.onrender.com/api',
   timeout: 10000,
 });
 
